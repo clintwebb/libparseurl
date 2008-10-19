@@ -1,0 +1,15 @@
+[Dir src]
+Dirs=libparseurl/web
+Files=
+
+[Dir src/libparseurl]
+Dirs=
+Files=Makefile/libparseurl.c/parseurl.h
+
+[Project Dir]
+Dirs=admin/docs/src
+Files=
+
+[Project File]
+Name=libparseurl
+Type=Default
