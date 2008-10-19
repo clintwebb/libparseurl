@@ -1,8 +1,29 @@
+/*
+
+	libparseurl
+	(c) Copyright Hyper-Active Systems, Australia
+
+	Contact:
+		Clinton Webb
+		webb.clint@gmail.com
+
+	This is a small and simple library with functions that are useful in retrieving parts of information about a URL.
+
+	It is released under GPL v2 or later license.  Details are included in the LICENSE file.
+
+*/
+
+
 
 #include "parseurl.h"
 
-// given a URL, return an allocated string containing the hostname. 
-char * p2_gethostfromurl(char *url)
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+// given a URL, return an allocated string containing the hostname.  On failure, return a NULL.
+char * url_gethost(char *url)
 {
 	char *host = NULL;
 	int i, j, l, t;
