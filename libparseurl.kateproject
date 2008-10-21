@@ -4,7 +4,7 @@ Files=
 
 [Dir src/libparseurl]
 Dirs=
-Files=Makefile/libparseurl.c/parseurl.h
+Files=Makefile/libparseurl.c/parseurl.h/lib-test.c
 
 [Project Dir]
 Dirs=admin/docs/src

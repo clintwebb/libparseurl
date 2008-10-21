@@ -15,6 +15,10 @@ libparseurl.a: libparseurl.o
 	ar -r $@
 	ar -r $@ $^
 
+
+lib-test: lib-test.c /usr/include/parseurl.h /usr/lib/libparseurl.a
+	gcc -o $@ lib-test.c -lparseurl
+
 install: libparseurl.a parseurl.h
 	cp parseurl.h /usr/include/
 	cp libparseurl.a /usr/lib/
@@ -23,4 +27,5 @@ install: libparseurl.a parseurl.h
 clean:
 	@-[ -e libparseurl.o ] && rm libparseurl.o
 	@-[ -e libparseurl.a ] && rm libparseurl.a
+	@-[ -e lib-test ] && rm lib-test
 
