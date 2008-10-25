@@ -47,6 +47,10 @@ char * url_gethost(char *url)
 				start = i + 1;
 			}
 		}
+		else if (url[i] == ':' && tok == 2) {
+			tok++;
+			assert(tok == 3);
+		}
 		else if (tok == 2) {
 			finish ++;
 		}
@@ -116,20 +120,114 @@ char * url_getpath(char *url)
 }
 
 
+char * url_getfile(char *url)
+{
+	char *file = NULL;
+	int i, len, tok;
+	int start, finish;
+
+	assert(url != NULL);
+	len = strlen(url);
+	assert(len > 0);
+
+	start = 0;
+	finish = 0;
+	tok = 0;
+	for(i=0; i<len; i++) {
+		if (url[i] == '/') {
+			tok++;
+
+			if (tok >= 3) {
+				start = i + 1;
+				finish = 0;
+			}
+		}
+		else if (tok > 3) {
+			if (url[i] == '?') { i=len; }
+			else { finish ++; }
+		}
+	}
+
+	assert(file == NULL);
+	
+	if (start > 0 && len > start && finish > 0) {
+		file = (char *) malloc(finish+1);
+		assert(file != NULL);
+		
+		strncpy(file, &url[start], finish);
+		file[finish] = '\0';
+	}
+	
+	return(file);
+}
+
 
 
 char * url_getprotocol(char *url)
 {
-	assert(0);
-	return(NULL);
+	char *prot = NULL;
+	int i, len;
+	int finish;
+
+	assert(url != NULL);
+	len = strlen(url);
+	assert(len > 0);
+
+	finish = 0;
+	for(i=0; i<len; i++) {
+		if (url[i] == ':' || url[i] == '/') {
+			assert(i > 0);
+			finish = i;
+			i = len;
+		}
+	}
+
+	assert(prot == NULL);
+	if (finish > 0) {
+
+		prot = (char *) malloc(finish+1);
+		assert(prot != NULL);
+	
+		strncpy(prot, url, finish);
+		prot[finish] = '\0';
+	}
+	
+	return(prot);
 }
 
 
 
 int url_getport(char *url)
 {
-	assert(0);
-	return(0);
+	int port;
+	int i, len, tok;
+
+	assert(url != NULL);
+	len = strlen(url);
+	assert(len > 0);
+
+	tok = 0;
+	port = 0;
+	for(i=0; i<len; i++) {
+		if (url[i] == '/') {
+			tok ++;
+			if (tok > 2) {
+				i = len;	// break out of the loop
+			}
+		}
+		else if (url[i] == ':' && tok == 2) {
+			tok ++;
+			assert(tok == 3);
+		}
+		else if (tok == 3 && (url[i] >= '0' && url[i] <= '9')) {
+			assert(port >= 0);
+			if (port > 0) port *= 10;
+			port += (url[i] - '0');
+		}
+	}
+
+	assert(port >= 0);
+	return(port);
 }
 
 

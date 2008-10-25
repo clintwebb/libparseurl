@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>libparseurl</title>
+</head>
+<body>
+
+<h1>libparseurl</h1>
+<p>C library to extract the various elements of a URL.</p>
+
+<h2>Summary</h2>
+<p>libparseurl is a simple set of routines that return a specific peice of information when given a full URL.</p>
+
+<h2>Licence</h2>
+<p>libparseurl is released under the Gnu Public Licence (version 2 or greater).  If you wish to use libparseurl on any project that cannot utilise the GPL licence, you should contact Hyper-Active Systems to obtain a suitable licence.</p>
+
+<h2>Download</h2>
+<p>Download the source from the following location:</p>
+<ul>
+<li><a href="libparseurl-src-1.0.tar.gz">libparseurl-src-1.0.tar.gz</a></li>
+</ul>
+
+<h2>Build and Install</h2>
+libparseurl is easily built and installed.
+<pre>
+  make
+  sudo make install
+</pre>
+<p>If you don't have sudo installed and configured on your system, log in as root and run the 'make install' command.</p>
+
+<h2>Introduction to libparseurl</h2>
+
+<h3>Help and documentation</h3>
+<p>In addition to this document, all functions have complete man pages which should be included with the install.</p>
+
+<h3>A quick example</h3>
+<pre>
+<span style="color: #008000;">#include &lt;parseurl.h&gt;</span>
+
+<span style="color: #800000;">char</span><span style="color: #000000;"> *host, *path;</span>
+<span style="color: #800000;">int</span><span style="color: #000000;"> port;</span>
+
+<span style="color: #000000;">host = url_gethost(url);</span>
+<span style="color: #000000;">path = url_getpath(url);</span>
+<span style="color: #000000;"></span><span style="font-weight: bold;color: #000000;">if</span><span style="color: #000000;"> (host)  { free(host); }</span>
+<span style="color: #000000;"></span><span style="font-weight: bold;color: #000000;">if</span><span style="color: #000000;"> (path)  { free(path); }</span>
+</pre>
+
+<h3>Parsing the URL</h3>
+<p>A URL contains multiple peices of information.  It contains the host, sometimes the port number, a remote path, and the file to retrieve.  Additionally it also contains the protocol used (http, https, ftp, etc).</p>
+<p>Any function that returns a string pointer will have allocated memory for it.  The developer will be responsible for cleaning up this memory to avoid memory leaks. </p>
+
+<h2>Contributing to libparseurl development</h2>
+<p>We welcome requests for changes or improvements, the source is managed thru a <b>git</b> repository at github.  You are encouraged to fork it and submit any changes back to us.   See <a href="http://github.com/hyper/libparseurl/">http://github.com/hyper/libparseurl/</a>.</p>
+<p>Contact information via email can be obtained by looking at the source code and header files.</p>
+
+<h2>Projects or Products that use libparseurl</h2>
+<p>libparseurl is a rather new library, so it has not been exposed to a lot of developers.  However, there are a few other libraries and projects that utilise it.</p>
+<ul>
+  <li><a href="http://hyper-active.com.au/libevhttpget/">libevhttpget</a> - library to obtain files over http using a libevent event queue.
+  <li><a href="http://hyper-active.com.au/p2net/">p2net</a> - peer-to-peer web downloading assistance project.
+</ul>
+
+<hr>
+<footer>
+&copy; Copyright 2008, Hyper-Active Systems, Australia.
+</footer>
+</body>
+</html>

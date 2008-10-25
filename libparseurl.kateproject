@@ -3,8 +3,16 @@ Dirs=libparseurl/web
 Files=
 
 [Dir src/libparseurl]
+Dirs=doc
+Files=Makefile/parseurl.h/lib-test.c/parseurl.c
+
+[Dir src/libparseurl/doc]
 Dirs=
-Files=Makefile/libparseurl.c/parseurl.h/lib-test.c
+Files=libparseurl.3/url_gethost.3/url_getpath.3/url_getport.3/url_getfile.3/url_getprotocol.3
+
+[Dir src/web]
+Dirs=
+Files=index.html
 
 [Project Dir]
 Dirs=admin/docs/src

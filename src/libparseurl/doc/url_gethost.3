@@ -1,0 +1,52 @@
+.\" man page for libparseurl
+.\" Contact dev@hyper-active.com.au to correct errors or omissions. 
+.TH url_gethost 3 "24 October 2008" "1.0" "libparseurl - Library for extracting info from a given URL."
+.SH NAME
+url_gethost \- return the host portion of the URL.
+.SH SYNOPSIS
+.B #include <parseurl.h>
+.sp
+.B char * url_gethost(char *url);
+.br
+.SH EXAMPLES
+#include <parseurl.h>
+.sp
+char *url = "http://hyper-active.com.au/libparseurl/index.html";
+.br
+char *host, *path, *file, *protocol;
+.br
+int port=80;
+.sp
+host = url_gethost(url);
+.br
+path = url_getpath(url);
+.br
+file = url_getfile(url);
+.br
+protocol = url_getprotocol(url);
+.br
+port = url_getport(url);
+.br
+.SH DESCRIPTION
+.B url_gethost()
+is used to get the host portion out of a URL.   If it is able to find it in a valid URL, then it will return a pointer to 
+a string that has been allocated on the heap.  This means that it must be de-allocated (with 
+.B free
+when it is no longer needed).
+.SH SEE ALSO
+.BR libparseurl (3),
+.BR url_getpath (3),
+.BR url_getfile (3),
+.BR url_getprotocol (3),
+.BR url_getport (3)
+.SH BUGS
+No known bugs at this time. 
+.SH AUTHOR
+.nf
+Clint Webb (webb.clint@gmail.com)
+on behalf of Hyper-Active Systems, Australia.
+.br
+http://www.hyper-active.com.au/libexpbuf/
+.fi
+.SH HISTORY
+Oct 24, 2008 \- Initial v1.0 release made public.
