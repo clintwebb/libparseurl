@@ -1,7 +1,7 @@
 /*
 
 	libparseurl
-	(c) Copyright Hyper-Active Systems, Australia
+	(c) 2024 Copyright Clinton Webb
 
 	Contact:
 		Clinton Webb
@@ -16,6 +16,7 @@
 #ifndef __PARSEURL_H
 #define __PARSEURL_H
 
+int    url_isvalid(char *url);
 char * url_getprotocol(char *url);
 char * url_gethost(char *url);
 char * url_getpath(char *url);

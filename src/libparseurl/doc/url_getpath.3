@@ -29,7 +29,7 @@ port = url_getport(url);
 .br
 .SH DESCRIPTION
 .B url_getpath()
-is used to get the path portion out of a URL.  This path will include any file at the end.
+is used to get the path portion out of a URL.  This path will include any file at the end, including any query or fragment.
 .br
 If it is able to find it in a valid URL, then it will return a pointer to
 a string that has been allocated on the heap.  This means that it must be de-allocated (with 
@@ -37,6 +37,7 @@ a string that has been allocated on the heap.  This means that it must be de-all
 when it is no longer needed).
 .SH SEE ALSO
 .BR libparseurl (3),
+.BR url_isvalid (3),
 .BR url_gethost (3),
 .BR url_getprotocol (3),
 .BR url_getfile (3),
@@ -46,9 +47,6 @@ No known bugs at this time.
 .SH AUTHOR
 .nf
 Clint Webb (webb.clint@gmail.com)
-on behalf of Hyper-Active Systems, Australia.
-.br
-http://www.hyper-active.com.au/libparseurl/
 .fi
 .SH HISTORY
 Oct 24, 2008 \- Initial v1.0 release made public.

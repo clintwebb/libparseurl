@@ -1,0 +1,64 @@
+.\" man page for libparseurl
+.TH url_isvalid 3 "3 March 2024" "1.0" "libparseurl - Library for extracting info from a given URL."
+.SH NAME
+url_getprotocol \- return the protocol portion of the URL.
+.SH SYNOPSIS
+.B #include <parseurl.h>
+.sp
+.B int url_isvalid(char *url);
+.br
+.SH EXAMPLES
+#include <parseurl.h>
+.sp
+char *url = "http://hyper-active.com.au/libparseurl/index.html";
+.br
+char *host, *path, *file, *protocol;
+.br
+int port=80;
+.sp
+if ( url_isvalid(url) == 0 ) {
+.br
+    host = url_gethost(url);
+.br
+    path = url_getpath(url);
+.br
+    file = url_getfile(url);
+.br
+    protocol = url_getprotocol(url);
+.br
+    port = url_getport(url);
+.sp
+    free(host);
+.br
+    free(path);
+.br
+    free(file);
+.br
+    free(protocol);
+.br
+}
+.sp
+.SH DESCRIPTION
+.B url_isvalid()
+is used to verify that the url string at least passed minimal URL protocol.  If it passes, it will return a 0.  If invalid will return a -1.
+.sp
+url_isvalid() will avoid causing an assert, but will try to validate the passed string.
+.sp
+NOTE that this function does not validate the requirements for each protocol, but is just validating the overall high-level url structure.
+.sp
+.SH SEE ALSO
+.BR libparseurl (3),
+.BR url_getprotocol (3),
+.BR url_gethost (3),
+.BR url_getpath (3),
+.BR url_getfile (3),
+.BR url_getport (3)
+.SH BUGS
+No known bugs at this time. 
+.SH AUTHOR
+.nf
+Clint Webb (webb.clint@gmail.com).
+.br
+.fi
+.SH HISTORY
+Oct 24, 2008 \- Initial v1.0 release made public.

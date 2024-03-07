@@ -32,6 +32,7 @@ port = url_getport(url);
 is used to get the port portion out of a URL.   If it is able to find it in a valid URL, then it will return the port number.  If no particular port was specified, it will return a 0.
 .SH SEE ALSO
 .BR libparseurl (3),
+.BR url_isvalid (3),
 .BR url_getprotocol (3),
 .BR url_gethost (3),
 .BR url_getpath (3),
@@ -41,9 +42,6 @@ No known bugs at this time.
 .SH AUTHOR
 .nf
 Clint Webb (webb.clint@gmail.com)
-on behalf of Hyper-Active Systems, Australia.
-.br
-http://www.hyper-active.com.au/libparseurl/
 .fi
 .SH HISTORY
 Oct 24, 2008 \- Initial v1.0 release made public.

@@ -1,7 +1,7 @@
 /*
 
 	libparseurl
-	(c) Copyright Hyper-Active Systems, Australia
+	(c) 2024 Copyright Clinton Webb
 
 	Contact:
 		Clinton Webb
@@ -13,13 +13,185 @@
 
 */
 
-
-
 #include "parseurl.h"
+
+#include <stdio.h>
+#include <stdbool.h>
 
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define MAX_URL_LEN		2048
+
+// The following entries will be used to track the progress when iterating through the URL.
+#define IS_PRE			0
+#define IS_PROT_CHAR	1
+#define IS_PROT			2
+#define IS_SLASH1		4
+#define IS_SLASH2		5
+#define IS_AT			6
+#define IS_HOST_COLON	7
+#define IS_HOST_SLASH	8
+#define IS_PATH			9
+#define IS_Q			10
+#define IS_HASH			11
+
+
+static inline int check_alpha(char ch)
+{
+	if ((ch >= 'A' && ch <= 'Z') ||
+		(ch >= 'a' && ch <= 'z') )
+	{ return true; }
+	else { return false; }
+}
+
+static inline int check_num(char ch)
+{
+	if (ch >= '0' && ch <= '9') { return true; }
+	else { return false; }
+}
+
+static inline int check_min(char ch)
+{
+	if ( check_alpha(ch) || check_num(ch) ||
+		ch == '+' ||
+		ch == '.' ||
+		ch == '-')
+	{ return true; }
+	else { return false; }
+}
+
+static inline int check_main(char ch)
+{
+	if ( check_min(ch) ||
+		ch == '+' ||
+		ch == '.' ||
+		ch == '-' ||
+		ch == '!' ||
+		ch == '$' ||
+		ch == '&' ||
+		ch == '\'' ||
+		ch == '@' ||
+		ch == '(' ||
+		ch == ')' ||
+		ch == '*' ||
+		ch == ',' ||
+		ch == ';' ||
+		ch == '=' )
+	{ return true; }
+	else { return false; }
+}
+
+static inline int check_path(char ch)
+{
+	if ( check_main(ch) ||
+		ch == '/' )
+	{ return true; }
+	else { return false; }
+}
+
+
+int url_isvalid(char *url)
+{
+	const int fail = false;
+	const int ok = true;
+	int result = ok;
+
+	if (url == NULL) { result = fail; }
+	else {
+		int len = strlen(url);
+		assert(len >= 0);
+
+		// printf("len: %d\n", len);
+
+		if (len == 0 || len > MAX_URL_LEN) { result = fail; }
+		else {
+			// track the progress of iterating through the url protocol.
+			int pos = 0;
+
+			// 'info' indicates what section of the protocol has completed.
+			int info = IS_PRE;
+			char *pre = NULL;
+
+			int i = 0;
+			char *next = url;
+			while ( result == ok && i < len) {
+
+				// printf("Checking (%d): '%c'\n", info, *next);
+
+				switch (info) {
+					case IS_PRE:
+						// the first character in the protocol needs to be a Letter.
+						if (check_alpha(*next)) { info = IS_PROT_CHAR; }
+						else 					{ result = fail; }
+						break;
+					case IS_PROT_CHAR:
+						if (*next == ':') 		{ info = IS_PROT; }
+						else if ( !check_min(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_PROT:
+						if (*next == '/') { info = IS_SLASH1; }
+						else if ( check_main(*next) ) { info = IS_PATH; }
+						else { result = fail; }
+						break;
+					case IS_SLASH1:
+						if (*next == '/') { info = IS_SLASH2; }
+						else { result = fail; }
+						break;
+					case IS_SLASH2:
+						// at this point we dont know if it is HOST info, or USER info... will just keep progressing until we hit a special character.
+						if (*next == '@') { info = IS_AT; }
+						else if (*next == ':') { info = IS_HOST_COLON; }
+						else if ( !check_main(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_AT:
+						if (*next == ':') { info = IS_HOST_COLON; }
+						else if ( !check_main(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_HOST_COLON:
+						if (*next == '/') { info = IS_HOST_SLASH; }
+						else if (*next == '#') { info = IS_HASH; }
+						else if ( !check_num(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_HOST_SLASH:
+						if (*next == '?') { info = IS_Q; }
+						else if (*next == '#') { info = IS_HASH; }
+						else if ( !check_path(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_Q:
+						if (*next == '#') { info = IS_HASH; }
+						else if ( !check_main(*next) ) {
+							result = fail;
+						}
+						break;
+					case IS_HASH:
+						if ( !check_main(*next) ) {
+							result = fail;
+						}
+						break;
+					default:
+						result = fail;
+				}
+
+				next++;
+				i ++;
+			}
+		}
+	}
+
+	return (result);
+}
 
 
 // given a URL, return an allocated string containing the hostname.
@@ -59,6 +231,7 @@ char * url_gethost(char *url)
 	assert(start > 0);
 	assert(start < i);
 	assert(finish >= 0);
+	assert(finish < len);
 	assert(host == NULL);
 
 	if (finish > 0) {
@@ -98,6 +271,11 @@ char * url_getpath(char *url)
 				start = i;
 			}
 		}
+	}
+
+	if (start == 0) {
+		// No path was specified, so return nothing.
+		return(NULL);
 	}
 
 	assert(tok <= 3);

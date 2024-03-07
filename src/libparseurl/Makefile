@@ -4,7 +4,7 @@ all: libparseurl.so.1.0.1
 
 ARGS=
 
-MANPATH=/usr/local/man
+MANPATH=/usr/share/man
 
 # Need to be able to make 'man-pages' as well.  Not sure where to get the source for those... 
 
